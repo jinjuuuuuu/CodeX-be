@@ -1,10 +1,10 @@
-package com.example.demo;
+package com.example.code_judge;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class LoginServerApplicationTests {
+class CodeJudgeApplicationTests {
 
 	@Test
 	void contextLoads() {
