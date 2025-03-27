@@ -1,41 +1,47 @@
 {
   "problems": [
     {
-      "id": 1,
+      "problem_id": 1,
       "title": "Two Sum",
       "description": "Find two numbers that sum up to a target",
-      "input": {
-        "nums": [2, 7],
-        "target": 9
-      },
-      "expected_output": [0, 1]
+      "example_inout": {
+        "input": {
+          "nums": [2, 7, 11, 15],
+          "target": 9
+        },
+        "output": [2, 7]
+      }
     },
     {
-      "id": 2,
+      "problem_id": 2,
       "title": "Palindrome",
       "description": "Check if a string is a palindrome",
-      "input": {
-        "string": "racecar"
-      },
-      "expected_output": true
+      "example_inout": {
+        "input": {
+          "value": "banana"
+        },
+        "output": true
+      }
     }
   ],
   "submissions": [
     {
-      "id": 1,
+      "submission_id": 1,
       "user_id": 101,
       "problem_id": 1,
       "code": "public int[] twoSum(int[] nums, int target) { ... }",
       "language": "Java",
-      "status": "pass"
+      "status": "pass",
+      "submitted_at": "2025-01-01T00:00"
     },
     {
-      "id": 2,
+      "submission_id": 2,
       "user_id": 102,
       "problem_id": 2,
       "code": "public boolean isPalindrome(String s) { ... }",
       "language": "Java",
-      "status": "fail"
+      "status": "fail",
+      "submitted_at": "2024-12-31T00:00"
     }
   ]
 }
