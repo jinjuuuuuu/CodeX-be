@@ -28,7 +28,7 @@ public class ProblemController {
 
     @GetMapping("/filter")
     public List<ProblemListDTO> filterProblems(
-        @RequestParam(value = "problemId", required = false) Integer problemId,
+        @RequestParam(value = "problemId", required = false) Long problemId,
         @RequestParam(value = "difficulty", required = false) Integer difficulty,
         @RequestParam(value = "tag", required = false) String tag,
         @RequestParam(value = "title", required = false) String title) {
@@ -36,7 +36,7 @@ public class ProblemController {
     }
 
     @GetMapping("/{problemId}")
-    public ProblemDTO getProblemById(@PathVariable Integer problemId) {
+    public ProblemDTO getProblemById(@PathVariable Long problemId) {
         return problemService.getProblemById(problemId);
     }
 }

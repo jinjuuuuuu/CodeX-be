@@ -27,7 +27,7 @@ public class TestRunner {
         this.codeExecutor = codeExecutor;
     }
 
-    public void runTest(String email, String code, String language, Integer problemId) {
+    public void runTest(String email, String code, String language, Long problemId) {
         System.out.println("[DEBUG] 입력값 - email: " + email + ", language: " + language + ", problemId: " + problemId);
     
         // Problem 객체 조회
@@ -92,7 +92,7 @@ public class TestRunner {
 
             while(continueSolving) {
                 System.out.print("Enter the problem ID you want to solve: ");
-                int problemId = scanner.nextInt();
+                long problemId = scanner.nextLong();
                 scanner.nextLine(); // 버퍼 비우기
 
                 // 사용자로부터 email 입력 받기

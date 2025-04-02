@@ -24,36 +24,36 @@ public class ProblemService {
                         problem.getProblemId(),
                         problem.getTitle(),
                         problem.getDifficulty(),
-                        problem.getTag()
+                        problem.getTags()
                 ))
                 .collect(Collectors.toList());
     }
 
-    public ProblemDTO getProblemById(Integer problemId) {
+    public ProblemDTO getProblemById(Long problemId) {
         return problemRepository.findById(problemId)
                 .map(problem -> new ProblemDTO(
                         problem.getProblemId(),
                         problem.getTitle(),
                         problem.getDescription(),
                         problem.getDifficulty(),
-                        problem.getTag(),
+                        problem.getTags(),
                         problem.getExampleInput(),
                         problem.getExampleOutput()
                 ))
                 .orElseThrow(() -> new ProblemNotFoundException("Problem not found with ID: " + problemId));
     }
 
-    public List<ProblemListDTO> filterProblems(Integer problemId, Integer difficulty, String tag, String title) {
+    public List<ProblemListDTO> filterProblems(Long problemId, Integer difficulty, String tags, String title) {
         return problemRepository.findAll().stream()
                 .filter(problem -> problemId == null || problem.getProblemId().equals(problemId))
                 .filter(problem -> difficulty == null || problem.getDifficulty().equals(difficulty))
-                .filter(problem -> tag == null || problem.getTag().equals(tag))
+                .filter(problem -> tags == null || problem.getTags().equals(tags))
                 .filter(problem -> title == null || problem.getTitle().equals(title))
                 .map(problem -> new ProblemListDTO(
                         problem.getProblemId(),
                         problem.getTitle(),
                         problem.getDifficulty(),
-                        problem.getTag()
+                        problem.getTags()
                 ))
                 .collect(Collectors.toList());
     }

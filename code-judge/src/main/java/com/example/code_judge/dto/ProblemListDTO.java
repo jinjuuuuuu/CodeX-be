@@ -1,24 +1,24 @@
 package com.example.code_judge.dto;
 
 public class ProblemListDTO {
-    private Integer problemId;
+    private Long problemId;
     private String title;
     private Integer difficulty;
-    private String tag;
+    private String tags;
 
-    public ProblemListDTO(Integer problemId, String title, Integer difficulty, String tag) {
+    public ProblemListDTO(Long problemId, String title, Integer difficulty, String tags) {
         this.problemId = problemId;
         this.title = title;
         this.difficulty = difficulty;
-        this.tag = tag;
+        this.tags = tags;
     }
 
     // Getters and Setters
-    public Integer getProblemId() {
+    public Long getProblemId() {
         return problemId;
     }
 
-    public void setProblemId(Integer problemId) {
+    public void setProblemId(Long problemId) {
         this.problemId = problemId;
     }
 
@@ -38,11 +38,11 @@ public class ProblemListDTO {
         this.difficulty = difficulty;
     }
 
-    public String getTag() {
-        return tag;
+    public String getTags() {
+        return tags;
     }
 
-    public void setTag(String tag) {
-        this.tag = tag;
+    public void setTag(String tags) {
+        this.tags = tags;
     }
 }

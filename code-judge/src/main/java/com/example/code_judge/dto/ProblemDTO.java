@@ -1,29 +1,29 @@
 package com.example.code_judge.dto;
 
 public class ProblemDTO {
-    private Integer problemId;
+    private Long problemId;
     private String title;
     private String description;
     private Integer difficulty;
-    private String tag;
+    private String tags;
     private String exampleInput;
     private String exampleOutput;
 
-    public ProblemDTO (Integer problemId, String title, String description, Integer difficulty, String tag, String exampleInput, String exampleOutput) {
+    public ProblemDTO (Long problemId, String title, String description, Integer difficulty, String tags, String exampleInput, String exampleOutput) {
         this.problemId = problemId;
         this.title = title;
         this.description = description;
         this.difficulty = difficulty;
-        this.tag = tag;
+        this.tags = tags;
         this.exampleInput = exampleInput;
         this.exampleOutput = exampleOutput;
     }
     
-    public Integer getProblemId() {
+    public Long getProblemId() {
         return problemId;
     }
     
-    public void setProblemId(Integer problemId) {
+    public void setProblemId(Long problemId) {
         this.problemId = problemId;
     }
     
@@ -51,12 +51,12 @@ public class ProblemDTO {
         this.difficulty = difficulty;
     }
     
-    public String getTag() {
-        return tag;
+    public String getTags() {
+        return tags;
     }
     
-    public void setTag(String tag) {
-        this.tag = tag;
+    public void setTags(String tags) {
+        this.tags = tags;
     }
     
     public String getExampleInput() {

@@ -16,7 +16,7 @@ public class Submission {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // 자동 증가 ID
     @Column(name = "submission_id")
-    private Integer submissionId;
+    private Long submissionId;
 
     @NotNull
     @Column(length = 100)
