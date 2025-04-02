@@ -1,5 +1,7 @@
 package com.example.code_judge.domain;
 
+import javax.validation.constraints.NotNull;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,29 +13,32 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Problem {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "problem_id") // DB 컬럼명은 유지하고, Java에서는 problemId 사용
-    private Long problemId;
+    @Column(name = "problem_id") // DB 컬럼명 지정
+    @JsonProperty("problem_id") // JSON 필드명 지정
+    private Integer problemId;
 
+    @NotNull
+    @Column(length = 100)
     private String title;
+
+    @NotNull
+    @Lob
+    @Column(columnDefinition = "TEXT")
     private String description;
 
-    @OneToOne(cascade = CascadeType.ALL) // ExampleInOut과 연관관계 설정
-    @JoinColumn(name = "example_inout") // DB에서 외래 키 컬럼 이름 지정
-    private ExampleInOut exampleInOut;
+    @NotNull
+    private Integer difficulty;
 
-    @Version
-    private Integer version; // 낙관적 잠금을 위한 버전 필드
+    @Column(length = 100)
+    private String tag;
 
-    public void setProblemId(Long problemId) {
-        this.problemId = problemId;
-    }
+    @Lob
+    @Column(columnDefinition = "TEXT")
+    @JsonProperty("example_input")
+    private String exampleInput; // 문자열로 변경
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
+    @Lob
+    @Column(columnDefinition = "TEXT")
+    @JsonProperty("example_output")
+    private String exampleOutput; // 문자열로 변경
 }

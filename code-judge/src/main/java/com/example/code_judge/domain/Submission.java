@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import java.time.ZonedDateTime;
+
+import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -12,52 +14,40 @@ import java.time.ZonedDateTime;
 @NoArgsConstructor
 public class Submission {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "submission_id") // DB 컬럼명은 submission_id
-    private Long submissionId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // 자동 증가 ID
+    @Column(name = "submission_id")
+    private Integer submissionId;
 
-    @Column(name = "user_id")
-    private Long userId;
+    @NotNull
+    @Column(length = 100)
+    private String email;
 
-    @Column(name = "problem_id")
-    private Long problemId;
+    @ManyToOne(fetch = FetchType.LAZY) // Problem과 다대일 관계 설정
+    @JoinColumn(name = "problem_id", nullable = false) // 외래 키 설정
+    private Problem problem;
 
+    @Lob
+    @Column(columnDefinition = "TEXT")
     private String code;
+
+    @NotNull
+    @Column(length = 50)
     private String language;
-    private String status;
 
+    @NotNull
+    @Column(length = 20)
+    private String status; // pass 또는 fail 저장
+
+    @NotNull
     @Column(name = "submitted_at")
-    private ZonedDateTime submittedAt;
+    private LocalDateTime submittedAt; // 제출 시간 저장
 
-    // Optional: 낙관적 잠금을 위한 버전 필드
-    @Version
-    private Integer version;
-
-    public void setSubmissionId(Long submissionId) {
-        this.submissionId = submissionId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public void setProblemId(Long problemId) {
-        this.problemId = problemId;
-    }
-
-    public void setCode(String code) {
+    public Submission(String email, Problem problem, String code, String language, String status, LocalDateTime submittedAt) {
+        this.email = email;
+        this.problem = problem;
         this.code = code;
-    }
-
-    public void setLanguage(String language) {
         this.language = language;
-    }
-
-    public void setStatus(String status) {
         this.status = status;
-    }
-
-    public void setSubmittedAt(ZonedDateTime submittedAt) {
         this.submittedAt = submittedAt;
     }
 }

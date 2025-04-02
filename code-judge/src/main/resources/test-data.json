@@ -4,44 +4,46 @@
       "problem_id": 1,
       "title": "Two Sum",
       "description": "Find two numbers that sum up to a target",
-      "example_inout": {
-        "input": {
-          "nums": [2, 7, 11, 15],
-          "target": 9
-        },
-        "output": [2, 7]
-      }
+      "difficulty": 0,
+      "tag": "simple problem",
+      "example_input": "",
+      "example_output": "2 7"
     },
     {
       "problem_id": 2,
       "title": "Palindrome",
       "description": "Check if a string is a palindrome",
-      "example_inout": {
-        "input": {
-          "value": "banana"
-        },
-        "output": true
-      }
-    }
-  ],
-  "submissions": [
-    {
-      "submission_id": 1,
-      "user_id": 101,
-      "problem_id": 1,
-      "code": "public int[] twoSum(int[] nums, int target) { ... }",
-      "language": "Java",
-      "status": "pass",
-      "submitted_at": "2025-01-01T00:00"
+      "difficulty": 3,
+      "tag": "simpson problem",
+      "example_input": "banana",
+      "example_output": "false"
     },
     {
-      "submission_id": 2,
-      "user_id": 102,
-      "problem_id": 2,
-      "code": "public boolean isPalindrome(String s) { ... }",
-      "language": "Java",
-      "status": "fail",
-      "submitted_at": "2024-12-31T00:00"
+      "problem_id": 3,
+      "title": "Reverse Integer",
+      "description": "Reverse the digits of an integer",
+      "difficulty": 1,
+      "tag": "problem",
+      "example_input": "123",
+      "example_output": "321"
+    },
+    {
+      "problem_id": 4,
+      "title": "Roman to Integer",
+      "description": "Convert a roman numeral to an integer",
+      "difficulty": 2,
+      "tag": "problem",
+      "example_input": "III",
+      "example_output": "3"
+    },
+    {
+      "problem_id": 5,
+      "title": "Longest Common Prefix",
+      "description": "Find the longest common prefix among an array of strings",
+      "difficulty": 1,
+      "tag": "problem",
+      "example_input": "[\"flower\",\"flow\",\"flight\"]",
+      "example_output": "fl"
     }
   ]
 }
