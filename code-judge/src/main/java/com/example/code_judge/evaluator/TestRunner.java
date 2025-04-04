@@ -4,13 +4,11 @@ import com.example.code_judge.domain.Problem;
 import com.example.code_judge.domain.Submission;
 import com.example.code_judge.repository.ProblemRepository;
 import com.example.code_judge.repository.SubmissionRepository;
-import com.example.code_judge.service.ProblemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 import org.springframework.boot.SpringApplication;
 import com.example.code_judge.CodeJudgeApplication;
-import com.example.code_judge.exception.ProblemNotFoundException; // Add this import
 
 import java.util.Objects;
 import java.util.Scanner;
@@ -96,15 +94,6 @@ public class TestRunner {
                 System.out.print("Enter the problem ID you want to solve: ");
                 long problemId = scanner.nextLong();
                 scanner.nextLine(); // 버퍼 비우기
-
-                // ProblemService 빈 가져오기
-                ProblemService problemService = context.getBean(ProblemService.class);
-                try {
-                    problemService.getProblemById(problemId);
-                } catch (ProblemNotFoundException e) {
-                    System.out.println("Problem not found with ID: " + problemId);
-                    continue;
-                }
 
                 // 사용자로부터 email 입력 받기
                 System.out.print("Enter your email: ");
