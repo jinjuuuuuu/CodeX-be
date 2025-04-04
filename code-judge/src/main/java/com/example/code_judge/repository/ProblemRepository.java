@@ -13,11 +13,11 @@ public interface ProblemRepository extends JpaRepository<Problem, Long> {
 @Query("SELECT p FROM Problem p WHERE " +
             "(:problemId IS NULL OR p.problemId = :problemId) AND " +
             "(:difficulty IS NULL OR p.difficulty = :difficulty) AND " +
-            "(:tag IS NULL OR p.tags LIKE %:tag%) AND " +
+            "(:tags IS NULL OR p.tags LIKE %:tags%) AND " +
             "(:title IS NULL OR LOWER(p.title) LIKE LOWER(CONCAT('%', :title, '%')))")
     Page<Problem> filterProblems(@Param("problemId") Long problemId,
                                  @Param("difficulty") Integer difficulty,
-                                 @Param("tag") String tag,
+                                 @Param("tags") String tags,
                                  @Param("title") String title,
                                  Pageable pageable);
 }
