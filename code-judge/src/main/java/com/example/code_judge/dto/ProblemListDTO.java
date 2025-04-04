@@ -42,7 +42,7 @@ public class ProblemListDTO {
         return tags;
     }
 
-    public void setTags(String tags) {
+    public void setTag(String tags) {
         this.tags = tags;
     }
 }

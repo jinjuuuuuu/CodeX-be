@@ -13,8 +13,8 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Problem {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "problem_id", nullable = false, updatable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // AUTO_INCREMENT를 위한 설정
+    @Column(name = "problem_id", nullable = false, updatable = false) // DB 컬럼명 지정
     private Long problemId;
 
     @NotNull
@@ -35,10 +35,10 @@ public class Problem {
     @Lob
     @Column(columnDefinition = "TEXT")
     @JsonProperty("example_input")
-    private String exampleInput;
+    private String exampleInput; // 문자열로 변경
 
     @Lob
     @Column(columnDefinition = "TEXT")
     @JsonProperty("example_output")
-    private String exampleOutput;
+    private String exampleOutput; // 문자열로 변경
 }

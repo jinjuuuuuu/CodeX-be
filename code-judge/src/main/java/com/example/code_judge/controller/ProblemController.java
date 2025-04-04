@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.data.domain.Page;
 
-// import java.util.List;
+import java.util.List;
 
 @RestController
 @RequestMapping("/problems")
@@ -22,23 +22,22 @@ public class ProblemController {
         this.problemService = problemService;
     }
 
-    // @GetMapping
-    // public List<ProblemListDTO> getAllProblemsPaged(
-    //     @RequestParam(defaultValue = "0") int page,
-    //     @RequestParam(defaultValue = "10") int size) {
-    //     return problemService.getAllProblemsPaged(page, size).getContent();    
-    // }
-
     @GetMapping
+    public List<ProblemListDTO> getAllProblemsPaged(
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int size) {
+        return problemService.getAllProblemsPaged(page, size).getContent();    
+    }
+
+    @GetMapping("/filter")
     public Page<ProblemListDTO> filterProblemsPaged(
         @RequestParam(value = "problemId", required = false) Long problemId,
         @RequestParam(value = "difficulty", required = false) Integer difficulty,
-        @RequestParam(value = "tags", required = false) String tags,
+        @RequestParam(value = "tag", required = false) String tag,
         @RequestParam(value = "title", required = false) String title,
         @RequestParam(defaultValue = "0") int page,
-        @RequestParam(defaultValue = "10") int size,
-        @RequestParam(value = "sortby", required = false, defaultValue = "null") String sortby) {
-        return problemService.filterProblemsPaged(problemId, difficulty, tags, title, page, size, sortby);
+        @RequestParam(defaultValue = "10") int size) {
+        return problemService.filterProblemsPaged(problemId, difficulty, tag, title, page, size);
     }
 
     @GetMapping("/{problemId}")
