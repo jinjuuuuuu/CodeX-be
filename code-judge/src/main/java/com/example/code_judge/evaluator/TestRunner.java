@@ -4,21 +4,24 @@ import com.example.code_judge.domain.Problem;
 import com.example.code_judge.domain.Submission;
 import com.example.code_judge.repository.ProblemRepository;
 import com.example.code_judge.repository.SubmissionRepository;
+import com.example.code_judge.repository.UserRepository;
+import com.example.code_judge.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
-import org.springframework.boot.SpringApplication;
-import com.example.code_judge.CodeJudgeApplication;
+import org.springframework.boot.CommandLineRunner;
 
 import java.util.Objects;
 import java.util.Scanner;
 
 @Component
-public class TestRunner {
+public class TestRunner implements CommandLineRunner {
     private final CodeExecutor codeExecutor;
 
     @Autowired
     private ProblemRepository problemRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private SubmissionRepository submissionRepository;
@@ -27,9 +30,17 @@ public class TestRunner {
         this.codeExecutor = codeExecutor;
     }
 
-    public void runTest(String email, String code, String language, Long problemId) {
-        System.out.println("[DEBUG] 입력값 - email: " + email + ", language: " + language + ", problemId: " + problemId);
+    public void runTest(Long userId, String code, String language, Long problemId) {
+        System.out.println("[DEBUG] 입력값 - user_id: " + userId + ", language: " + language + ", problemId: " + problemId);
     
+        // User 객체 조회
+        User user = userRepository.findById(userId)
+            .orElseThrow(() -> {
+                System.err.println("[ERROR] User not found with id: " + userId);
+                return new IllegalArgumentException("User not found with id: " + userId);
+            });
+        System.out.println("[DEBUG] User: " + user);
+
         // Problem 객체 조회
         Problem problem = problemRepository.findById(problemId)
             .orElseThrow(() -> {
@@ -60,7 +71,7 @@ public class TestRunner {
         System.out.println("[DEBUG] status: " + status);
 
         Submission submission = new Submission(
-            email,
+            user,
             problem,
             code,
             language,
@@ -77,27 +88,23 @@ public class TestRunner {
         }
     }
 
-    // main 메서드 수정
-    public static void main(String[] args) {
-        // Spring Context 초기화
-        ApplicationContext context = SpringApplication.run(CodeJudgeApplication.class, args);
 
-        // TestRunner 빈 가져오기
-        TestRunner testRunner = context.getBean(TestRunner.class);
-
+    @Override
+    public void run(String... args) {
         // 사용자 입력을 받기 위한 Scanner 객체 생성
         try (Scanner scanner = new Scanner(System.in)) {
             boolean continueSolving = true;
-            // 문제 번호 입력 받기
 
-            while(continueSolving) {
+            while (continueSolving) {
+                // 사용자로부터 userId 입력 받기
+                System.out.print("Enter your user ID: ");
+                long userId = scanner.nextLong();
+                scanner.nextLine(); // 버퍼 비우기
+
+                // 문제 번호 입력 받기
                 System.out.print("Enter the problem ID you want to solve: ");
                 long problemId = scanner.nextLong();
                 scanner.nextLine(); // 버퍼 비우기
-
-                // 사용자로부터 email 입력 받기
-                System.out.print("Enter your email: ");
-                String email = scanner.nextLine();
 
                 // 프로그래밍 언어 입력 받기
                 System.out.print("Enter the programming language (e.g., java, python, c, cpp): ");
@@ -115,7 +122,7 @@ public class TestRunner {
 
                 // 테스트 실행
                 try {
-                    testRunner.runTest(email, code, language, problemId);
+                    runTest(userId, code, language, problemId);
                 } catch (Exception e) {
                     System.err.println("Error occurred during test execution: " + e.getMessage());
                 }

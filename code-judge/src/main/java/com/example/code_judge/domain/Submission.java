@@ -18,9 +18,9 @@ public class Submission {
     @Column(name = "submission_id")
     private Long submissionId;
 
-    @NotNull
-    @Column(length = 100)
-    private String email;
+    @ManyToOne(fetch = FetchType.LAZY) // User와 다대일 관계 설정
+    @JoinColumn(name = "user_id", nullable = false) // 외래 키 설정
+    private User user;
 
     @ManyToOne(fetch = FetchType.LAZY) // Problem과 다대일 관계 설정
     @JoinColumn(name = "problem_id", nullable = false) // 외래 키 설정
@@ -42,8 +42,8 @@ public class Submission {
     @Column(name = "submitted_at")
     private LocalDateTime submittedAt; // 제출 시간 저장
 
-    public Submission(String email, Problem problem, String code, String language, String status, LocalDateTime submittedAt) {
-        this.email = email;
+    public Submission(User user, Problem problem, String code, String language, String status, LocalDateTime submittedAt) {
+        this.user = user;
         this.problem = problem;
         this.code = code;
         this.language = language;
