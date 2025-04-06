@@ -12,7 +12,7 @@ spring:
     show-sql: true # 실행되는 SQL 쿼리 출력
     properties:
       hibernate:
-        format_sql: true # SQL 포맷팅
+        "[format_sql]": true # SQL 포맷팅
         dialect: org.hibernate.dialect.MySQLDialect # MySQL에 맞는 Hibernate 방언 설정
 
 logging:

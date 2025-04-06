@@ -31,8 +31,20 @@ public class ProblemService {
                 ));
     }
 
-    public Page<ProblemListDTO> filterProblemsPaged(Long problemId, Integer difficulty, String tag, String title, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by("problemId").ascending());
+    public Page<ProblemListDTO> filterProblemsPaged(Long problemId, Integer difficulty, String tag, String title, int page, int size, String sort) {
+        Sort sortBy;
+        switch (sort) {
+            case "difficulty_asc":
+                sortBy = Sort.by(Sort.Order.asc("difficulty"));
+                break;
+            case "difficulty_desc":
+                sortBy = Sort.by(Sort.Order.desc("difficulty"));
+                break;
+            default:
+                sortBy = Sort.by(Sort.Order.asc("problemId")); // 기본값
+        }
+    
+        Pageable pageable = PageRequest.of(page, size, sortBy);
         return problemRepository.filterProblems(problemId, difficulty, tag, title, pageable)
                 .map(problem -> new ProblemListDTO(
                         problem.getProblemId(),

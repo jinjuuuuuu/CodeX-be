@@ -1,7 +1,6 @@
 package com.example.code_judge.domain;
 
 import javax.validation.constraints.NotNull;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,10 +18,11 @@ public class User {
     private Long userId;
 
     @NotNull
-    @Column(columnDefinition = "TEXT", length = 100)
+    @Column(columnDefinition = "TEXT")
     private String email;
-    
+
     @NotNull
+    @Column(columnDefinition = "TEXT")
     private String username;
 
     @NotNull
