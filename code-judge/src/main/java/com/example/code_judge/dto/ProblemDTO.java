@@ -8,8 +8,10 @@ public class ProblemDTO {
     private String tags;
     private String exampleInput;
     private String exampleOutput;
+    private Long totalSubmitted;
+    private String totalAccuracy;
 
-    public ProblemDTO (Long problemId, String title, String description, Integer difficulty, String tags, String exampleInput, String exampleOutput) {
+    public ProblemDTO(Long problemId, String title, String description, Integer difficulty, String tags, String exampleInput, String exampleOutput, Long totalSubmitted, String totalAccuracy) {
         this.problemId = problemId;
         this.title = title;
         this.description = description;
@@ -17,6 +19,8 @@ public class ProblemDTO {
         this.tags = tags;
         this.exampleInput = exampleInput;
         this.exampleOutput = exampleOutput;
+        this.totalSubmitted = totalSubmitted;
+        this.totalAccuracy = totalAccuracy;
     }
     
     public Long getProblemId() {
@@ -73,5 +77,21 @@ public class ProblemDTO {
     
     public void setExampleOutput(String exampleOutput) {
         this.exampleOutput = exampleOutput;
+    }
+
+    public Long getTotalSubmitted() {
+        return totalSubmitted;
+    }
+
+    public void setTotalSubmitted(Long totalSubmitted) {
+        this.totalSubmitted = totalSubmitted;
+    }
+
+    public String getTotalAccuracy() {
+        return totalAccuracy;
+    }
+
+    public void setTotalAccuracy(String totalAccuracy) {
+        this.totalAccuracy = totalAccuracy;
     }
 }

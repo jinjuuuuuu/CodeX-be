@@ -18,4 +18,8 @@ public class UserService {
     public List<ProblemSubmissionDTO> getProblemSubmissions(Long userId) {
         return submissionRepository.getProblemSubmissions(userId);
     }
+
+    public List<UserSubmissionSummaryDTO> getAllUserSubmissionSummaries() {
+        return submissionRepository.getAllUserSubmissionSummaries();
+    }
 }
