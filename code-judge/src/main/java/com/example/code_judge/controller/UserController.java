@@ -8,10 +8,15 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/users")
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
+
+    @GetMapping
+    public ResponseEntity<List<UserSubmissionSummaryDTO>> getAllUserSubmissionSummaries() {
+        return ResponseEntity.ok(userService.getAllUserSubmissionSummaries());
+    }
 
     @GetMapping("/{userId}/submission-summary")
     public ResponseEntity<UserSubmissionSummaryDTO> getSubmissionSummary(@PathVariable Long userId) {

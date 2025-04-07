@@ -12,14 +12,26 @@ import java.util.List;
 
 @Repository
 public interface SubmissionRepository extends JpaRepository<Submission, Long> {
+    @Query("SELECT new com.example.code_judge.dto.UserSubmissionSummaryDTO(" +
+           "u.userId, " +
+           "COALESCE(COUNT(s), 0), " +
+           "COALESCE(SUM(CASE WHEN s.status = 'PASS' THEN 1 ELSE 0 END), 0), " +
+           "COALESCE(SUM(CASE WHEN s.status = 'FAIL' THEN 1 ELSE 0 END), 0), " +
+           "COALESCE(ROUND(SUM(CASE WHEN s.status = 'PASS' THEN 1 ELSE 0 END) * 100.0 / COUNT(s), 2), 0)) " +
+           "FROM User u LEFT JOIN Submission s ON u.userId = s.user.userId " +
+           "WHERE u.userId = :userId " +
+           "GROUP BY u.userId")
+    UserSubmissionSummaryDTO getUserSubmissionSummary(@Param("userId") Long userId);
 
     @Query("SELECT new com.example.code_judge.dto.UserSubmissionSummaryDTO(" +
-           "s.user.userId, COUNT(s), " +
-           "SUM(CASE WHEN s.status = 'PASS' THEN 1 ELSE 0 END), " +
-           "SUM(CASE WHEN s.status = 'FAIL' THEN 1 ELSE 0 END), " +
-           "ROUND(SUM(CASE WHEN s.status = 'PASS' THEN 1 ELSE 0 END) * 100.0 / COUNT(s), 2)) " +
-           "FROM Submission s WHERE s.user.userId = :userId GROUP BY s.user.userId")
-    UserSubmissionSummaryDTO getUserSubmissionSummary(@Param("userId") Long userId);
+           "u.userId, " +
+           "COALESCE(COUNT(s), 0), " +
+           "COALESCE(SUM(CASE WHEN s.status = 'PASS' THEN 1 ELSE 0 END), 0), " +
+           "COALESCE(SUM(CASE WHEN s.status = 'FAIL' THEN 1 ELSE 0 END), 0), " +
+           "COALESCE(ROUND(SUM(CASE WHEN s.status = 'PASS' THEN 1 ELSE 0 END) * 100.0 / COUNT(s), 2), 0)) " +
+           "FROM User u LEFT JOIN Submission s ON u.userId = s.user.userId " +
+           "GROUP BY u.userId")
+    List<UserSubmissionSummaryDTO> getAllUserSubmissionSummaries();
 
     @Query("SELECT new com.example.code_judge.dto.ProblemSubmissionDTO(" +
            "s.problem.problemId, " +
@@ -27,4 +39,12 @@ public interface SubmissionRepository extends JpaRepository<Submission, Long> {
            "COUNT(s)) " +
            "FROM Submission s WHERE s.user.userId = :userId GROUP BY s.problem.problemId")
     List<ProblemSubmissionDTO> getProblemSubmissions(@Param("userId") Long userId);
+    
+    @Query("SELECT COUNT(DISTINCT s.user.userId) " +
+           "FROM Submission s WHERE s.problem.problemId = :problemId")
+    Long countDistinctUsersByProblemId(@Param("problemId") Long problemId);
+
+    @Query("SELECT ROUND(COUNT(DISTINCT CASE WHEN s.status = 'PASS' THEN s.user.userId ELSE NULL END) * 100.0 / COUNT(DISTINCT s.user.userId), 1) " +
+           "FROM Submission s WHERE s.problem.problemId = :problemId")
+    Double getProblemAccuracyByUsers(@Param("problemId") Long problemId);
 }
