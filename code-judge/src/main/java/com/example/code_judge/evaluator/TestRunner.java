@@ -11,7 +11,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Objects;
-import java.util.Scanner;
 
 @Component
 public class TestRunner implements CommandLineRunner {
@@ -86,48 +85,48 @@ public class TestRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        // 사용자 입력을 받기 위한 Scanner 객체 생성
-        try (Scanner scanner = new Scanner(System.in)) {
-            boolean continueSolving = true;
+        // // 사용자 입력을 받기 위한 Scanner 객체 생성
+        // try (Scanner scanner = new Scanner(System.in)) {
+        //     boolean continueSolving = true;
 
-            while (continueSolving) {
-                // 사용자로부터 userId 입력 받기
-                System.out.print("Enter your user ID: ");
-                long userId = scanner.nextLong();
-                scanner.nextLine(); // 버퍼 비우기
+        //     while (continueSolving) {
+        //         // 사용자로부터 userId 입력 받기
+        //         System.out.print("Enter your user ID: ");
+        //         long userId = scanner.nextLong();
+        //         scanner.nextLine(); // 버퍼 비우기
 
-                // 문제 번호 입력 받기
-                System.out.print("Enter the problem ID you want to solve: ");
-                long problemId = scanner.nextLong();
-                scanner.nextLine(); // 버퍼 비우기
+        //         // 문제 번호 입력 받기
+        //         System.out.print("Enter the problem ID you want to solve: ");
+        //         long problemId = scanner.nextLong();
+        //         scanner.nextLine(); // 버퍼 비우기
 
-                // 프로그래밍 언어 입력 받기
-                System.out.print("Enter the programming language (e.g., java, python, c, cpp): ");
-                String language = scanner.nextLine();
+        //         // 프로그래밍 언어 입력 받기
+        //         System.out.print("Enter the programming language (e.g., java, python, c, cpp): ");
+        //         String language = scanner.nextLine();
 
-                // 사용자로부터 code 입력 받기
-                System.out.println("Enter your code (end with an empty line): ");
-                StringBuilder codeBuilder = new StringBuilder();
-                while (true) {
-                    String line = scanner.nextLine();
-                    if (line.isEmpty()) break; // 빈 줄 입력 시 종료
-                    codeBuilder.append(line).append("\n");
-                }
-                String code = codeBuilder.toString();
+        //         // 사용자로부터 code 입력 받기
+        //         System.out.println("Enter your code (end with an empty line): ");
+        //         StringBuilder codeBuilder = new StringBuilder();
+        //         while (true) {
+        //             String line = scanner.nextLine();
+        //             if (line.isEmpty()) break; // 빈 줄 입력 시 종료
+        //             codeBuilder.append(line).append("\n");
+        //         }
+        //         String code = codeBuilder.toString();
 
-                // 테스트 실행
-                try {
-                    runTest(userId, code, language, problemId);
-                } catch (Exception e) {
-                    System.err.println("Error occurred during test execution: " + e.getMessage());
-                }
+        //         // 테스트 실행
+        //         try {
+        //             runTest(userId, code, language, problemId);
+        //         } catch (Exception e) {
+        //             System.err.println("Error occurred during test execution: " + e.getMessage());
+        //         }
 
-                System.out.println("Continue solving other problems? (yes/no)");
-                String response = scanner.nextLine();
-                if (!response.equals("yes")) {
-                    continueSolving = false;
-                }
-            }
-        }
+        //         System.out.println("Continue solving other problems? (yes/no)");
+        //         String response = scanner.nextLine();
+        //         if (!response.equals("yes")) {
+        //             continueSolving = false;
+        //         }
+        //     }
+        // }
     }
 }
