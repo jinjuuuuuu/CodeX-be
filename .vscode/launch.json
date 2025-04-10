@@ -1,0 +1,14 @@
+{
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Spring Boot-CodeJudgeApplication<code-judge>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "com.example.code_judge.CodeJudgeApplication",
+      "projectName": "code-judge",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env"
+    }
+  ]
+}
