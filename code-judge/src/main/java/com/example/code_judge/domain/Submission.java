@@ -50,4 +50,13 @@ public class Submission {
         this.status = status;
         this.submittedAt = submittedAt;
     }
+
+    // 추가된 메서드
+    public Long getUserId() {
+        return user != null ? user.getUserId() : null;
+    }
+
+    public Long getProblemId() {
+        return problem != null ? problem.getProblemId() : null;
+    }
 }
