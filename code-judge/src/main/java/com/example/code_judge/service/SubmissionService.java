@@ -38,4 +38,17 @@ public class SubmissionService {
 
         submissionRepository.save(submission);
     }
+
+    public String submitCode(SubmissionRequestDTO request) {
+        // 간단한 로직: 제출된 코드와 언어를 확인하고 성공 메시지 반환
+        if (request.getUserId() == null || request.getProblemId() == null || request.getCode() == null || request.getLanguage() == null) {
+            throw new IllegalArgumentException("Invalid submission request");
+        }
+
+        
+        saveSubmission(request);
+
+        // 여기서는 간단히 성공 메시지를 반환
+        return "Success";
+    }
 }
