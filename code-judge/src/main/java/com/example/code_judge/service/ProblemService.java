@@ -25,29 +25,25 @@ public class ProblemService {
     public Page<ProblemListDTO> getAllProblemsPaged(int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("problemId").ascending());
         return problemRepository.findAll(pageable)
-                .map(problem -> {
-                // 제출 인원 수 계산
-                Long totalSubmitted = submissionRepository.countDistinctUsersByProblemId(problem.getProblemId());
-
-                // 정답률 계산
-                String totalAccuracy;
-                if (totalSubmitted == 0) {
-                    totalAccuracy = "-"; // 제출한 인원이 없으면 "-"
-                } else {
-                    Double accuracy = submissionRepository.getProblemAccuracyByUsers(problem.getProblemId());
-                    totalAccuracy = accuracy != null ? String.format("%.1f", accuracy) : "-"; // 소수점 1자리까지 포맷
-                }
-
-                // ProblemListDTO 생성
-                return new ProblemListDTO(
-                        problem.getProblemId(),
-                        problem.getTitle(),
-                        problem.getDifficulty(),
-                        problem.getTags(),
-                        totalSubmitted,
-                        totalAccuracy
-                );
-            });
+                .map(problem -> submissionRepository.getAllProblemStatistics().stream()
+                        .filter(stat -> stat.getProblemId().equals(problem.getProblemId()))
+                        .findFirst()
+                        .map(stat -> new ProblemListDTO(
+                                problem.getProblemId(),
+                                problem.getTitle(),
+                                problem.getDifficulty(),
+                                problem.getTags(),
+                                stat.getTotalSubmitted(),
+                                stat.getTotalAccuracy()
+                        ))
+                        .orElse(new ProblemListDTO(
+                                problem.getProblemId(),
+                                problem.getTitle(),
+                                problem.getDifficulty(),
+                                problem.getTags(),
+                                0L,
+                                "-"
+                        )));
     }
 
     public Page<ProblemListDTO> filterProblemsPaged(Long problemId, Integer difficulty, String tag, String title, int page, int size, String sort) {
@@ -65,58 +61,54 @@ public class ProblemService {
 
         Pageable pageable = PageRequest.of(page, size, sortBy);
         return problemRepository.filterProblems(problemId, difficulty, tag, title, pageable)
-            .map(problem -> {
-                // 제출 인원 수 계산
-                Long totalSubmitted = submissionRepository.countDistinctUsersByProblemId(problem.getProblemId());
-
-                // 정답률 계산
-                String totalAccuracy;
-                if (totalSubmitted == 0) {
-                    totalAccuracy = "-"; // 제출한 인원이 없으면 "-"
-                } else {
-                    Double accuracy = submissionRepository.getProblemAccuracyByUsers(problem.getProblemId());
-                    totalAccuracy = accuracy != null ? String.format("%.1f", accuracy) : "-"; // 소수점 1자리까지 포맷
-                }
-
-                // ProblemListDTO 생성
-                return new ProblemListDTO(
-                        problem.getProblemId(),
-                        problem.getTitle(),
-                        problem.getDifficulty(),
-                        problem.getTags(),
-                        totalSubmitted,
-                        totalAccuracy
-                );
-            });
+                .map(problem -> submissionRepository.getAllProblemStatistics().stream()
+                        .filter(stat -> stat.getProblemId().equals(problem.getProblemId()))
+                        .findFirst()
+                        .map(stat -> new ProblemListDTO(
+                                problem.getProblemId(),
+                                problem.getTitle(),
+                                problem.getDifficulty(),
+                                problem.getTags(),
+                                stat.getTotalSubmitted(),
+                                stat.getTotalAccuracy()
+                        ))
+                        .orElse(new ProblemListDTO(
+                                problem.getProblemId(),
+                                problem.getTitle(),
+                                problem.getDifficulty(),
+                                problem.getTags(),
+                                0L,
+                                "-"
+                        )));
     }
 
     public ProblemDTO getProblemById(Long problemId) {
         return problemRepository.findById(problemId)
-                .map(problem -> {
-                    // 제출 인원 계산
-                    Long totalSubmitted = submissionRepository.countDistinctUsersByProblemId(problemId);
-
-                    // 정답률 계산
-                    String totalAccuracy;
-                    if (totalSubmitted == 0) {
-                        totalAccuracy = "-"; // 제출한 인원이 없으면 "-"
-                    } else {
-                        totalAccuracy = String.valueOf(submissionRepository.getProblemAccuracyByUsers(problemId));
-                    }
-                    
-                    // ProblemDTO 생성
-                    return new ProblemDTO(
-                            problem.getProblemId(),
-                            problem.getTitle(),
-                            problem.getDescription(),
-                            problem.getDifficulty(),
-                            problem.getTags(),
-                            problem.getExampleInput(),
-                            problem.getExampleOutput(),
-                            totalSubmitted,
-                            totalAccuracy
-                    );
-                })
+                .map(problem -> submissionRepository.getAllProblemStatistics().stream()
+                        .filter(stat -> stat.getProblemId().equals(problemId))
+                        .findFirst()
+                        .map(stat -> new ProblemDTO(
+                                problem.getProblemId(),
+                                problem.getTitle(),
+                                problem.getDescription(),
+                                problem.getDifficulty(),
+                                problem.getTags(),
+                                problem.getExampleInput(),
+                                problem.getExampleOutput(),
+                                stat.getTotalSubmitted(),
+                                stat.getTotalAccuracy()
+                        ))
+                        .orElse(new ProblemDTO(
+                                problem.getProblemId(),
+                                problem.getTitle(),
+                                problem.getDescription(),
+                                problem.getDifficulty(),
+                                problem.getTags(),
+                                problem.getExampleInput(),
+                                problem.getExampleOutput(),
+                                0L,
+                                "-"
+                        )))
                 .orElseThrow(() -> new ProblemNotFoundException("Problem not found with ID: " + problemId));
     }
 }
