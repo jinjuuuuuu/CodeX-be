@@ -41,7 +41,7 @@ public interface SubmissionRepository extends JpaRepository<Submission, Long> {
            "FROM Submission s WHERE s.user.userId = :userId GROUP BY s.problem.problemId")
     List<ProblemSubmissionDTO> getProblemSubmissions(@Param("userId") Long userId);
     
-    @Query("SELECT new com.example.code_judge.dto.ProblemStatisticsDTO(" +
+    @Query("SELECT new com.example.code_judge.dto.ProblemListDTO(" +
            "s.problem.problemId, " +
            "COUNT(DISTINCT s.user.userId), " +
            "ROUND(COUNT(DISTINCT CASE WHEN s.status = 'PASS' THEN s.user.userId ELSE NULL END) * 100.0 / COUNT(DISTINCT s.user.userId), 1)) " +
