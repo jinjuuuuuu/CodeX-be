@@ -6,6 +6,8 @@ import com.example.code_judge.exception.ProblemNotFoundException;
 import com.example.code_judge.repository.ProblemRepository;
 import com.example.code_judge.repository.SubmissionRepository;
 
+import jakarta.annotation.PostConstruct;
+
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
@@ -23,6 +25,11 @@ public class ProblemService {
     public ProblemService(ProblemRepository problemRepository, SubmissionRepository submissionRepository) {
         this.problemRepository = problemRepository;
         this.submissionRepository = submissionRepository;
+    }
+
+    @PostConstruct
+    public void preloadCache() {
+        getAllProblemsPaged(0, 10);
     }
 
     @Cacheable("allProblemsPaged")
