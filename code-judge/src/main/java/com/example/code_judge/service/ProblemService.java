@@ -5,6 +5,9 @@ import com.example.code_judge.dto.ProblemListDTO;
 import com.example.code_judge.exception.ProblemNotFoundException;
 import com.example.code_judge.repository.ProblemRepository;
 import com.example.code_judge.repository.SubmissionRepository;
+
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -22,6 +25,7 @@ public class ProblemService {
         this.submissionRepository = submissionRepository;
     }
 
+    @Cacheable("allProblemsPaged")
     public Page<ProblemListDTO> getAllProblemsPaged(int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("problemId").ascending());
         return problemRepository.findAll(pageable)
@@ -46,6 +50,29 @@ public class ProblemService {
                         )));
     }
 
+    @CacheEvict(value = "allProblemsPaged", allEntries = true) // 캐시 무효화 추가
+    public void updateProblem(Long problemId, ProblemDTO updatedProblem) {
+        problemRepository.findById(problemId).ifPresentOrElse(problem -> {
+            problem.setTitle(updatedProblem.getTitle());
+            problem.setDescription(updatedProblem.getDescription());
+            problem.setDifficulty(updatedProblem.getDifficulty());
+            problem.setTags(updatedProblem.getTags());
+            problemRepository.save(problem); // 문제 업데이트
+        }, () -> {
+            throw new ProblemNotFoundException("Problem not found with ID: " + problemId);
+        });
+    }
+
+    @CacheEvict(value = "allProblemsPaged", allEntries = true) // 캐시 무효화 추가
+    public void deleteProblem(Long problemId) {
+        if (problemRepository.existsById(problemId)) {
+            problemRepository.deleteById(problemId); // 문제 삭제
+        } else {
+            throw new ProblemNotFoundException("Problem not found with ID: " + problemId);
+        }
+    }
+
+    @Cacheable("filteredProblemsPaged")
     public Page<ProblemListDTO> filterProblemsPaged(Long problemId, Integer difficulty, String tag, String title, int page, int size, String sort) {
         Sort sortBy;
         switch (sort) {
@@ -82,6 +109,7 @@ public class ProblemService {
                         )));
     }
 
+    @Cacheable("problemById")
     public ProblemDTO getProblemById(Long problemId) {
         return problemRepository.findById(problemId)
                 .map(problem -> submissionRepository.getAllProblemStatistics().stream()
