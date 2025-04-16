@@ -8,6 +8,12 @@ public class ProblemListDTO {
     private Long totalSubmitted;
     private String totalAccuracy;
 
+    public ProblemListDTO(Long problemId, Long totalSubmitted, Double totalAccuracy) {
+        this.problemId = problemId;
+        this.totalSubmitted = totalSubmitted;
+        this.totalAccuracy = totalAccuracy != null ? String.format("%.1f", totalAccuracy) : "-";
+    }
+
     public ProblemListDTO(Long problemId, String title, Integer difficulty, String tags, Long totalSubmitted, String totalAccuracy) {
         this.problemId = problemId;
         this.title = title;
