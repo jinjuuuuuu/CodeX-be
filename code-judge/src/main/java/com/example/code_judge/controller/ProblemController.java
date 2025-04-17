@@ -8,8 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
 
 @RestController
 @RequestMapping("/problems")
@@ -22,7 +21,7 @@ public class ProblemController {
     }
 
     @GetMapping
-    public List<ProblemListDTO> filterProblemsPaged(
+    public Page<ProblemListDTO> filterProblemsPaged(
         @RequestParam(value = "problemId", required = false) Long problemId,
         @RequestParam(value = "difficulty", required = false) Integer difficulty,
         @RequestParam(value = "tag", required = false) String tag,
