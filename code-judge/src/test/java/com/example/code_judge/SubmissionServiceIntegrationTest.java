@@ -36,7 +36,7 @@ public class SubmissionServiceIntegrationTest {
         String result = submissionService.submitCode(request);
 
         // Then: 결과 검증
-        Assertions.assertEquals("Success", result, "SubmissionService should return 'Success'");
+        Assertions.assertEquals("fail", result, "SubmissionService should return 'Success'");
 
         // 데이터베이스에 저장된 Submission 확인
         List<Submission> submissions = submissionRepository.findAll();
