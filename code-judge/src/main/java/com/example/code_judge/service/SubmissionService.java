@@ -9,6 +9,7 @@ import com.example.code_judge.repository.SubmissionRepository;
 import com.example.code_judge.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import com.example.code_judge.evaluator.CodeExecutor;
 
 @Service
 @RequiredArgsConstructor
@@ -17,7 +18,7 @@ public class SubmissionService {
     private final UserRepository userRepository;
     private final ProblemRepository problemRepository;
 
-    public void saveSubmission(SubmissionRequestDTO submissionRequestDTO) {
+    public Submission saveSubmission(SubmissionRequestDTO submissionRequestDTO) {
         // User 조회
         User user = userRepository.findById(submissionRequestDTO.getUserId())
             .orElseThrow(() -> new IllegalArgumentException("User not found with id: " + submissionRequestDTO.getUserId()));
@@ -26,17 +27,30 @@ public class SubmissionService {
         Problem problem = problemRepository.findById(submissionRequestDTO.getProblemId())
             .orElseThrow(() -> new IllegalArgumentException("Problem not found with id: " + submissionRequestDTO.getProblemId()));
 
+        // 제출된 코드 실행
+        String input = problem.getExampleInput(); // 문제의 입력값 가져오기
+        String expectedOutput = problem.getExampleOutput(); // 문제의 기대 출력값 가져오기
+        CodeExecutor codeExecutor = new CodeExecutor();
+        String executionResult = codeExecutor.execute(submissionRequestDTO.getCode(), input, submissionRequestDTO.getLanguage());
+
+        // 결과 평가
+        boolean isPassed = executionResult.trim().equals(expectedOutput.trim());
+        String status = isPassed ? "pass" : "fail";
+
         // Submission 생성 및 저장
         Submission submission = new Submission(
             user,
             problem,
             submissionRequestDTO.getCode(),
             submissionRequestDTO.getLanguage(),
-            submissionRequestDTO.getStatus(),
+            status,
             java.time.LocalDateTime.now()
         );
 
         submissionRepository.save(submission);
+
+        // Submission 객체 반환
+        return submission;
     }
 
     public String submitCode(SubmissionRequestDTO request) {
@@ -45,10 +59,9 @@ public class SubmissionService {
             throw new IllegalArgumentException("Invalid submission request");
         }
 
-        
-        saveSubmission(request);
+        Submission submission = saveSubmission(request);
 
-        // 여기서는 간단히 성공 메시지를 반환
-        return "Success";
+        // 상태 반환
+        return submission.getStatus();
     }
 }

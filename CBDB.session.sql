@@ -1,1 +1,1 @@
-SELECT * FROM submission;
+SELECT * FROM refresh_token;
