@@ -15,6 +15,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import java.util.List;
 
 @Service
 public class ProblemService {
@@ -80,7 +81,7 @@ public class ProblemService {
     }
 
     @Cacheable("filteredProblemsPaged")
-    public Page<ProblemListDTO> filterProblemsPaged(Long problemId, Integer difficulty, String tag, String title, int page, int size, String sort) {
+    public List<ProblemListDTO> filterProblemsPaged(Long problemId, Integer difficulty, String tag, String title, int page, int size, String sort) {
         Sort sortBy;
         switch (sort) {
             case "difficulty_asc":
@@ -92,7 +93,7 @@ public class ProblemService {
             default:
                 sortBy = Sort.by(Sort.Order.asc("problemId")); // 기본값
         }
-
+    
         Pageable pageable = PageRequest.of(page, size, sortBy);
         return problemRepository.filterProblems(problemId, difficulty, tag, title, pageable)
                 .map(problem -> submissionRepository.getAllProblemStatistics().stream()
@@ -113,7 +114,8 @@ public class ProblemService {
                                 problem.getTags(),
                                 0L,
                                 "-"
-                        )));
+                        )))
+                .toList(); // Page 객체를 List로 변환
     }
 
     @Cacheable("problemById")
