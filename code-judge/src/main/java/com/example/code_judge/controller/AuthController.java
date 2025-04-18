@@ -49,7 +49,13 @@ public class AuthController {
         tokenEntity.setExpiryDate(Instant.now().plusSeconds(60 * 60 * 24 * 7)); // 7 days
         refreshTokenRepository.save(tokenEntity);
 
-        return ResponseEntity.ok(new LoginResponse(accessToken, refreshToken));
+        return ResponseEntity.ok(new LoginResponse(
+            user.getUserId(), 
+            user.getEmail(), 
+            user.getUsername(),
+            accessToken,
+            refreshToken
+        ));   
     }
 
     @PostMapping("/logout")
