@@ -8,4 +8,12 @@ import lombok.Data;
 public class SubmissionResponseDTO {
     private String message;
     private String status;
+
+    public String getStatus() {
+        return status;
+    }
+    public String getMessage() {
+        return message;
+    }
+    public SubmissionResponseDTO() {}
 }

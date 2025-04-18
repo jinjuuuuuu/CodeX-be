@@ -5,7 +5,6 @@ public class SubmissionRequestDTO {
     private Long problemId;
     private String code;
     private String language;
-    private String status;
 
     // 기존 getter 및 setter
     public Long getUserId() {
@@ -38,14 +37,5 @@ public class SubmissionRequestDTO {
 
     public void setLanguage(String language) {
         this.language = language;
-    }
-
-    // 추가된 getter 및 setter
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
 }
