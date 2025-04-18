@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import com.example.code_judge.dto.LoginRequest;
 import com.example.code_judge.dto.LoginResponse;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.time.Instant;
 import java.util.Optional;
@@ -23,8 +22,6 @@ import java.util.Optional;
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthController {
-
-    private final BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
     private UserRepository userRepository;
@@ -68,24 +65,5 @@ public class AuthController {
         refreshTokenRepository.deleteByToken(token);
 
         return ResponseEntity.ok("Logged out successfully");
-    }
-
-    @PostMapping("/signup")
-    public ResponseEntity<?> signup(@RequestBody User user) {
-        if (user.getEmail() == null || user.getEmail().isEmpty()) {
-            return ResponseEntity.badRequest().body("Email is required");
-        }
-
-        if (user.getPassword() == null || user.getPassword().isEmpty()) {
-            return ResponseEntity.badRequest().body("Password is required");
-        }
-
-        if (userRepository.existsByEmail(user.getEmail())) {
-            return ResponseEntity.status(409).body("Email already exists");
-        }
-
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepository.save(user);
-        return ResponseEntity.ok("User registered successfully");
     }
 }
