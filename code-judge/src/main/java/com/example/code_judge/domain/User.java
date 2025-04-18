@@ -2,6 +2,8 @@ package com.example.code_judge.domain;
 
 import javax.validation.constraints.NotNull;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,6 +21,8 @@ public class User {
 
     @NotNull
     @Column(columnDefinition = "TEXT")
+    @NotNull(message = "Email is required")
+    @Email(message = "Invalid email format")
     private String email;
 
     @NotNull
@@ -27,6 +31,8 @@ public class User {
 
     @NotNull
     @Column(columnDefinition = "TEXT")
+    @NotNull(message = "Password is required")
+    // @Size(min = 8, message = "Password must be at least 8 characters long")
     private String password;
 
     @OneToMany(mappedBy = "user")

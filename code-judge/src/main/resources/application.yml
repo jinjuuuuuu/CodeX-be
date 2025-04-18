@@ -14,6 +14,16 @@ spring:
       hibernate:
         "[format_sql]": true # SQL 포맷팅
         dialect: org.hibernate.dialect.MySQLDialect # MySQL에 맞는 Hibernate 방언 설정
+  kafka:
+    bootstrap-servers: localhost:9092 # Kafka 브로커 주소
+    consumer:
+      group-id: cache-invalidation-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
 
 logging:
   level:
