@@ -22,14 +22,14 @@ public class SubmissionController {
 
             // JSON 형식으로 상태와 메시지를 반환
             SubmissionResponseDTO response = new SubmissionResponseDTO(
-                submission.getStatus(),
-                "Submission saved successfully!"
+                "Submission saved successfully!",
+                submission.getStatus()
             );
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             SubmissionResponseDTO errorResponse = new SubmissionResponseDTO(
-                "error",
-                "Error saving submission: " + e.getMessage()
+                "Error saving submission: " + e.getMessage(),
+                "error"
             );
             return ResponseEntity.status(500).body(errorResponse);
         }

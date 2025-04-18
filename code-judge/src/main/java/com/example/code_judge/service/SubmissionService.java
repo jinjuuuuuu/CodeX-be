@@ -19,25 +19,18 @@ public class SubmissionService {
     private final ProblemRepository problemRepository;
 
     public Submission saveSubmission(SubmissionRequestDTO submissionRequestDTO) {
-        // User 조회
         User user = userRepository.findById(submissionRequestDTO.getUserId())
             .orElseThrow(() -> new IllegalArgumentException("User not found with id: " + submissionRequestDTO.getUserId()));
-
-        // Problem 조회
+    
         Problem problem = problemRepository.findById(submissionRequestDTO.getProblemId())
             .orElseThrow(() -> new IllegalArgumentException("Problem not found with id: " + submissionRequestDTO.getProblemId()));
-
-        // 제출된 코드 실행
-        String input = problem.getExampleInput(); // 문제의 입력값 가져오기
-        String expectedOutput = problem.getExampleOutput(); // 문제의 기대 출력값 가져오기
+    
         CodeExecutor codeExecutor = new CodeExecutor();
-        String executionResult = codeExecutor.execute(submissionRequestDTO.getCode(), input, submissionRequestDTO.getLanguage());
-
-        // 결과 평가
-        boolean isPassed = executionResult.trim().equals(expectedOutput.trim());
+        String executionResult = codeExecutor.execute(submissionRequestDTO.getCode(), problem.getExampleInput(), submissionRequestDTO.getLanguage());
+    
+        boolean isPassed = executionResult.trim().equals(problem.getExampleOutput().trim());
         String status = isPassed ? "pass" : "fail";
-
-        // Submission 생성 및 저장
+    
         Submission submission = new Submission(
             user,
             problem,
@@ -46,10 +39,9 @@ public class SubmissionService {
             status,
             java.time.LocalDateTime.now()
         );
-
+    
+        System.out.println("Saving submission with status: " + status);
         submissionRepository.save(submission);
-
-        // Submission 객체 반환
         return submission;
     }
 

@@ -34,7 +34,6 @@ public class Submission {
     @Column(length = 50)
     private String language;
 
-    @NotNull
     @Column(length = 20)
     private String status; // pass 또는 fail 저장
 
@@ -59,4 +58,5 @@ public class Submission {
     public Long getProblemId() {
         return problem != null ? problem.getProblemId() : null;
     }
+
 }
