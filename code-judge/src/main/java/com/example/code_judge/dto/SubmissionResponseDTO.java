@@ -8,6 +8,7 @@ import lombok.Data;
 public class SubmissionResponseDTO {
     private String message;
     private String status;
+    private String actualOutput;
 
     public String getStatus() {
         return status;
@@ -15,5 +16,11 @@ public class SubmissionResponseDTO {
     public String getMessage() {
         return message;
     }
+    public String getActualOutput() {
+        return actualOutput;
+    }
+    public void setActualOutput(String actualOutput) {
+        this.actualOutput = actualOutput;
+    }   
     public SubmissionResponseDTO() {}
 }

@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 import org.springframework.stereotype.Component;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Component
 public class CodeExecutor {
@@ -14,6 +15,9 @@ public class CodeExecutor {
         String fileName = null;
         String output = "";
         try {
+            // JSON 문자열을 공백으로 구분된 입력값으로 변환
+            input = parseInput(input);
+
             // 제출된 코드를 파일로 저장
             fileName = saveCodeToFile(code, language);
 
@@ -28,7 +32,7 @@ public class CodeExecutor {
                     return captureError(compileProcess); // 컴파일 오류 반환
                 }
                 // Java 실행
-                processBuilder = new ProcessBuilder("java", "-cp", ".", fileName.replace(".java", ""));
+                processBuilder = new ProcessBuilder("java", "-cp", "temp", "SubmittedCode");
             } else if (language.equalsIgnoreCase("python")) {
                 processBuilder = new ProcessBuilder("python3", fileName); // Python 실행
             } else if (language.equalsIgnoreCase("c")) {
@@ -80,6 +84,17 @@ public class CodeExecutor {
             }
         }
         return output.trim();
+    }
+
+    // JSON 문자열을 공백으로 구분된 입력값으로 변환
+    private String parseInput(String input) throws Exception {
+        ObjectMapper objectMapper = new ObjectMapper();
+        String[] inputs = objectMapper.readValue(input, String[].class);
+        StringBuilder parsedInput = new StringBuilder();
+        for (String str : inputs) {
+            parsedInput.append(str).append(" ");
+        }
+        return parsedInput.toString().trim();
     }
 
     // 제출된 코드를 파일로 저장

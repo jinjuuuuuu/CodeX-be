@@ -41,6 +41,7 @@ public class SubmissionService {
         );
     
         System.out.println("Saving submission with status: " + status);
+        submission.setActualOutput(executionResult);
         submissionRepository.save(submission);
         return submission;
     }
