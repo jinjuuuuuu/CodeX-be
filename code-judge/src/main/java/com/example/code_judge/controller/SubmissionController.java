@@ -20,16 +20,20 @@ public class SubmissionController {
             // 제출 저장 및 결과 평가
             Submission submission = submissionService.saveSubmission(submissionRequestDTO);
 
+            String actualOutput = submission.getActualOutput();
+
             // JSON 형식으로 상태와 메시지를 반환
             SubmissionResponseDTO response = new SubmissionResponseDTO(
                 "Submission saved successfully!",
-                submission.getStatus()
+                submission.getStatus(),
+                actualOutput
             );
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             SubmissionResponseDTO errorResponse = new SubmissionResponseDTO(
                 "Error saving submission: " + e.getMessage(),
-                "error"
+                "error",
+                null
             );
             return ResponseEntity.status(500).body(errorResponse);
         }

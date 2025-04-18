@@ -50,7 +50,6 @@ public class Submission {
         this.submittedAt = submittedAt;
     }
 
-    // 추가된 메서드
     public Long getUserId() {
         return user != null ? user.getUserId() : null;
     }
@@ -59,4 +58,12 @@ public class Submission {
         return problem != null ? problem.getProblemId() : null;
     }
 
+    private String actualOutput;
+
+    public String getActualOutput() {
+        return actualOutput;
+    }
+    public void setActualOutput(String actualOutput) {
+        this.actualOutput = actualOutput;
+    }
 }
