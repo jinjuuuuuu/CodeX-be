@@ -41,6 +41,8 @@ public class Submission {
     @Column(name = "submitted_at")
     private LocalDateTime submittedAt; // 제출 시간 저장
 
+    private String actualOutput;
+
     public Submission(User user, Problem problem, String code, String language, String status, LocalDateTime submittedAt) {
         this.user = user;
         this.problem = problem;
@@ -50,15 +52,13 @@ public class Submission {
         this.submittedAt = submittedAt;
     }
 
-    public Long getUserId() {
-        return user != null ? user.getUserId() : null;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public Long getProblemId() {
-        return problem != null ? problem.getProblemId() : null;
+    public void setProblem(Problem problem) {
+        this.problem = problem;
     }
-
-    private String actualOutput;
 
     public String getActualOutput() {
         return actualOutput;

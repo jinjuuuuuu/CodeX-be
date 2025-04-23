@@ -17,7 +17,7 @@ public class JacksonConfig {
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
         // JSON 직렬화 시 null 값을 포함하지 않도록 설정 (선택 사항)
-        objectMapper.configure(SerializationFeature.WRITE_NULL_MAP_VALUES, false);
+        // objectMapper.configure(SerializationFeature.WRITE_NULL_MAP_VALUES, false);
 
         return objectMapper;
     }

@@ -3,14 +3,12 @@ package com.example.code_judge.evaluator;
 import com.example.code_judge.domain.Problem;
 import com.example.code_judge.domain.User;
 import com.example.code_judge.dto.SubmissionRequestDTO;
-import com.example.code_judge.dto.SubmissionResponseDTO;
+import com.example.code_judge.kafka.SubmissionProducer;
 import com.example.code_judge.repository.ProblemRepository;
 import com.example.code_judge.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.Objects;
 
@@ -23,6 +21,9 @@ public class TestRunner implements CommandLineRunner {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private SubmissionProducer submissionProducer; // Kafka Producer 주입
 
     public TestRunner(CodeExecutor codeExecutor) {
         this.codeExecutor = codeExecutor;
@@ -71,22 +72,12 @@ public class TestRunner implements CommandLineRunner {
         submissionRequestDTO.setCode(code);
         submissionRequestDTO.setLanguage(language);
 
-        // API 호출을 통해 Submission 저장
+        // Kafka를 통해 SubmissionRequestDTO 전송
         try {
-            RestTemplate restTemplate = new RestTemplate();
-            String apiUrl = "http://localhost:8080/submissions"; // SubmissionController의 API URL
-
-            // API 호출 및 응답 처리
-            ResponseEntity<SubmissionResponseDTO> response = restTemplate.postForEntity(apiUrl, submissionRequestDTO, SubmissionResponseDTO.class);
-
-            if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
-                SubmissionResponseDTO responseBody = response.getBody();
-                System.out.println("[DEBUG] Submission 저장 성공 - Status: " + responseBody.getStatus() + ", Message: " + responseBody.getMessage());
-            } else {
-                System.err.println("[ERROR] Submission 저장 실패 - 응답 코드: " + response.getStatusCode());
-            }
+            submissionProducer.sendSubmission(submissionRequestDTO);
+            System.out.println("[DEBUG] Kafka를 통해 SubmissionRequestDTO 전송 완료");
         } catch (Exception e) {
-            System.err.println("[ERROR] Submission 저장 중 오류 발생: " + e.getMessage());
+            System.err.println("[ERROR] Kafka 메시지 전송 중 오류 발생: " + e.getMessage());
             e.printStackTrace();
         }
     }

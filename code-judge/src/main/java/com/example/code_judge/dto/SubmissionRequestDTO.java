@@ -1,12 +1,21 @@
 package com.example.code_judge.dto;
 
 public class SubmissionRequestDTO {
+    private Long submissionId;
     private Long userId;
     private Long problemId;
     private String code;
     private String language;
 
     // 기존 getter 및 setter
+    public Long getSubmissionId() {
+        return submissionId;
+    }
+
+    public void setSubmissionId(Long submissionId) {
+        this.submissionId = submissionId;
+    }
+    
     public Long getUserId() {
         return userId;
     }
