@@ -43,8 +43,8 @@ public class SubmissionServiceIntegrationTest {
         Assertions.assertEquals(1, submissions.size(), "Submission count should be 1");
 
         Submission savedSubmission = submissions.get(0);
-        Assertions.assertEquals(1L, savedSubmission.getUser(), "User ID should match");
-        Assertions.assertEquals(1L, savedSubmission.getProblem(), "Problem ID should match");
+        Assertions.assertEquals(1L, savedSubmission.getUser().getUserId(), "User ID should match");
+        Assertions.assertEquals(1L, savedSubmission.getProblem().getProblemId(), "Problem ID should match");
         Assertions.assertEquals("print(\"Hello World\")", savedSubmission.getCode(), "Code should match");
         Assertions.assertEquals("python", savedSubmission.getLanguage(), "Language should match");
     }
