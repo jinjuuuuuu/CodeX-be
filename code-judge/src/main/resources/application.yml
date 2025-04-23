@@ -6,7 +6,9 @@ spring:
         protocol: SASL_SSL
       sasl:
         jaas:
-          config: org.apache.kafka.common.security.plain.PlainLoginModule required username='YNCDVMGSZEO2AEJZ' password='ThyQDPlAPdmXMpc3Z81tbEjZFDpKzWjyRLaiP6ebzjoqQdahtNThtfKta7k0G9Lq';
+          config: >
+            org.apache.kafka.common.security.plain.PlainLoginModule required
+            username='${KAFKA_USERNAME}' password='${KAFKA_PASSWORD}';
         mechanism: PLAIN
     consumer:
       group-id: code-consumer-group
