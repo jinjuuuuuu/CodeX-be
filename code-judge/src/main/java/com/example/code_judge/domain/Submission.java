@@ -52,8 +52,16 @@ public class Submission {
         this.submittedAt = submittedAt;
     }
 
+    public void getUser(User user) {
+        this.user = user;
+    }
+
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Problem getProblem() {
+        return problem;
     }
 
     public void setProblem(Problem problem) {
