@@ -1,0 +1,20 @@
+version: "3.8"
+services:
+  springboot:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: pkc-921jm.us-east-2.aws.confluent.cloud:9092
+      SPRING_KAFKA_PROPERTIES_SECURITY_PROTOCOL: SASL_SSL
+      SPRING_KAFKA_PROPERTIES_SASL_JAAS_CONFIG: org.apache.kafka.common.security.plain.PlainLoginModule required username='YNCDVMGSZEO2AEJZ' password='ThyQDPlAPdmXMpc3Z81tbEjZFDpKzWjyRLaiP6ebzjoqQdahtNThtfKta7k0G9Lq';
+      SPRING_KAFKA_PROPERTIES_SASL_MECHANISM: PLAIN
+      SPRING_KAFKA_CONSUMER_GROUP_ID: code-consumer-group
+      SPRING_DATASOURCE_URL: jdbc:mysql://switchback.proxy.rlwy.net:49925/railway
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: RClsobdReFppPUFNEaMYCXjBanOBehpC
+    volumes:
+      - ./:/app
