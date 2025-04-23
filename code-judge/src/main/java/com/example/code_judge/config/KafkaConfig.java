@@ -46,14 +46,13 @@ public class KafkaConfig {
         config.put(ProducerConfig.RETRIES_CONFIG, 3);
         config.put("security.protocol", "SASL_SSL");
         config.put("sasl.mechanism", "PLAIN");
-        config.put("sasl.jaas.config", "org.apache.kafka.common.security.plain.PlainLoginModule required username='YNCDVMGSZEO2AEJZ' password='ThyQDPlAPdmXMpc3Z81tbEjZFDpKzWjyRLaiP6ebzjoqQdahtNThtfKta7k0G9Lq';");
-        return new DefaultKafkaProducerFactory<>(config);
-    }
 
-    // KafkaTemplate for SubmissionResponseDTO
-    @Bean
-    public KafkaTemplate<String, SubmissionResponseDTO> kafkaResponseTemplate() {
-        return new KafkaTemplate<>(responseProducerFactory());
+        String username = System.getenv("KAFKA_USERNAME");
+        String password = System.getenv("KAFKA_PASSWORD");
+        config.put("sasl.jaas.config",
+            String.format("org.apache.kafka.common.security.plain.PlainLoginModule required username=\"%s\" password=\"%s\";", username, password));
+
+        return new DefaultKafkaProducerFactory<>(config);
     }
 
     @Bean
@@ -66,7 +65,12 @@ public class KafkaConfig {
         config.put(ProducerConfig.RETRIES_CONFIG, 3);
         config.put("security.protocol", "SASL_SSL");
         config.put("sasl.mechanism", "PLAIN");
-        config.put("sasl.jaas.config", "org.apache.kafka.common.security.plain.PlainLoginModule required username='YNCDVMGSZEO2AEJZ' password='ThyQDPlAPdmXMpc3Z81tbEjZFDpKzWjyRLaiP6ebzjoqQdahtNThtfKta7k0G9Lq';");
+
+        String username = System.getenv("KAFKA_USERNAME");
+        String password = System.getenv("KAFKA_PASSWORD");
+        config.put("sasl.jaas.config",
+            String.format("org.apache.kafka.common.security.plain.PlainLoginModule required username=\"%s\" password=\"%s\";", username, password));
+
         return new DefaultKafkaProducerFactory<>(config);
     }
 
@@ -82,9 +86,15 @@ public class KafkaConfig {
         config.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, 100);
         config.put("security.protocol", "SASL_SSL");
         config.put("sasl.mechanism", "PLAIN");
-        config.put("sasl.jaas.config", "org.apache.kafka.common.security.plain.PlainLoginModule required username='YNCDVMGSZEO2AEJZ' password='ThyQDPlAPdmXMpc3Z81tbEjZFDpKzWjyRLaiP6ebzjoqQdahtNThtfKta7k0G9Lq';");
+
+        String username = System.getenv("KAFKA_USERNAME");
+        String password = System.getenv("KAFKA_PASSWORD");
+        config.put("sasl.jaas.config",
+            String.format("org.apache.kafka.common.security.plain.PlainLoginModule required username=\"%s\" password=\"%s\";", username, password));
+
         return new DefaultKafkaConsumerFactory<>(config, new StringDeserializer(), new JsonDeserializer<>(SubmissionRequestDTO.class));
     }
+
 
     @Bean
     public ConcurrentKafkaListenerContainerFactory<String, SubmissionRequestDTO> kafkaListenerContainerFactory() {
