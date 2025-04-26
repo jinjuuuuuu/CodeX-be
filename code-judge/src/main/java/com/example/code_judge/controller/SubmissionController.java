@@ -55,6 +55,7 @@ public class SubmissionController {
 
             // 클라이언트에 "pending" 상태 반환
             SubmissionResponseDTO response = new SubmissionResponseDTO(
+                submission.getSubmissionId(),
                 "Submission request received successfully!",
                 "pending",
                 null // Replace null with an empty string or appropriate default value
@@ -63,6 +64,7 @@ public class SubmissionController {
         } catch (Exception e) {
             logger.error("Submission 생성 중 오류 발생: {}", e.getMessage(), e);
             SubmissionResponseDTO errorResponse = new SubmissionResponseDTO(
+                null,
                 "Error creating submission: " + e.getMessage(),
                 "error",
                 null
