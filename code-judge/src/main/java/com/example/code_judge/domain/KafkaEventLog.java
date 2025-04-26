@@ -2,10 +2,15 @@ package com.example.code_judge.domain;
  
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
  
 import java.time.LocalDateTime;
  
-@Entity
+@Getter
+@Setter
+@NoArgsConstructor
 @Data
 public class KafkaEventLog {
     @Id
@@ -16,12 +21,6 @@ public class KafkaEventLog {
  
     @Lob
     private String message;
-
-    private String status;
  
     private LocalDateTime createdAt;
-
-    public Long getId() {
-        return id;
-    }
 }
